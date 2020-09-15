@@ -9,7 +9,7 @@ public class Customer implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -5594036399866436312L;
-	private String name;
+	private String customerName;
 	private String address;
 	private String contactNumber;
 	private int userId;
@@ -20,9 +20,9 @@ public class Customer implements Serializable {
 		this("N/A", "N/A", "N/A", 0, "N/A",0);
 	}
 
-	public Customer(String name, String address, String contactNumber, int userId, String password,int deposit) {
+	public Customer(String customerName, String address, String contactNumber, int userId, String password,int deposit) {
 		super();
-		this.name = name;
+		this.customerName = customerName;
 		this.address = address;
 		this.contactNumber = contactNumber;
 		this.userId = userId;
@@ -30,11 +30,11 @@ public class Customer implements Serializable {
 	}
 
 	public String getName() {
-		return name;
+		return customerName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setName(String customerName) {
+		this.customerName = customerName;
 	}
 
 	public String getAddress() {
@@ -75,6 +75,12 @@ public class Customer implements Serializable {
 
 	public void setDeposit(int deposit) {
 		this.deposit = deposit;
+	}
+
+	@Override
+	public String toString() {
+		return "Customer [customerName=" + customerName + ", address=" + address + ", contactNumber=" + contactNumber
+				+ ", userId=" + userId + ", password=" + password + ", deposit=" + deposit + "]";
 	}
 	
 	

@@ -22,7 +22,7 @@ public class View {
 			System.out.println("Enter Details for the Account");
 			System.out.println("Customer Name");
 			scanner.nextLine();
-			String name=scanner.nextLine();
+			String customerName=scanner.nextLine();
 			System.out.println("Customer Address");
 			String address=scanner.nextLine();
 			System.out.println("Customer Contant Number");
@@ -35,7 +35,7 @@ public class View {
 			System.out.println("Initial Deposit Amount");
 			int deposit=scanner.nextInt();
 			
-		controller.createAccount(name, address, contactNumber, userId, password, deposit);
+		controller.createAccount(customerName, address, contactNumber, userId, password, deposit);
 			
 		System.out.println("DOLLARSBANK Welcomes You ");
 	    scanner =new Scanner(System.in);

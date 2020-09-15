@@ -34,9 +34,9 @@ public class DollarsBankController {
 		
 	}
 	
-	public void createAccount(String name, String address, String contactNumber, int userId, String password,int deposit) {
+	public void createAccount(String customerName, String address, String contactNumber, int userId, String password,int deposit) {
 		
-		Customer newCustomer=new Customer(name, address, contactNumber, userId, password,deposit);
+		Customer newCustomer=new Customer(customerName, address, contactNumber, userId, password,deposit);
 		
 		File file=new File("resources/" + userId+".data");
 		if (!file.exists()) {
