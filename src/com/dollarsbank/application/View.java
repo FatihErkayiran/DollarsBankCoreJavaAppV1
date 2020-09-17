@@ -86,7 +86,8 @@ public class View {
 					System.out.println("How much you want to withdraw ");
 					int money=scanner.nextInt();
 					scanner.nextLine();
-					controller.withdrawAmount(money, cuss);
+					int balance=controller.withdrawAmount(money, cuss);
+					controller.updateBalance(balance, cuss);
 					
 				}
 				else if (accountChoice==3) {

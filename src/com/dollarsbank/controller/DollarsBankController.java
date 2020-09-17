@@ -151,7 +151,8 @@ public class DollarsBankController {
 //			if (rs.next()) {
 //				System.out.println(" you got it ");
 //			}
-			System.out.println("updated balance of " + count + " succesfully ");
+			System.out.println("updated balance of " + count + " account succesfully ");
+			pstmt2.close();
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -163,11 +164,12 @@ public class DollarsBankController {
 	
 	
 	
-	public void withdrawAmount(int money,Customer customer) {
+	public int withdrawAmount(int money,Customer customer) {
 		LocalDate localDate=LocalDate.now();
 		java.sql.Date sqlDate = java.sql.Date.valueOf(localDate );
+		int balance=customer.getBalance();
 		try(PreparedStatement pstmt=connection.prepareStatement("insert into transactions values(?,?,?,?)")) {
-			int balance=customer.getBalance();
+			
 			balance-=money;
 			
 			pstmt.setInt(1, balance);
@@ -186,7 +188,7 @@ public class DollarsBankController {
 			// TODO: handle exception
 		}
 		
-		
+		return balance;
 	}
 
 }
