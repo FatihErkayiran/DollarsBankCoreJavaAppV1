@@ -8,11 +8,16 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.dollarsbank.connection.BetterConnectionManager;
+import com.dollarsbank.model.Account;
 import com.dollarsbank.model.Customer;
 
 
@@ -189,6 +194,54 @@ public class DollarsBankController {
 		}
 		
 		return balance;
+	}
+	public Customer fundTransfer(int usrId,int fund) {
+		Customer cuss=null;
+		try(PreparedStatement pstmt=connection.prepareStatement("select * from customers where userId = ?")) {
+			
+			pstmt.setInt(1, usrId);
+			
+			ResultSet rs=pstmt.executeQuery();
+			
+			if (rs.next()) {
+				   String cName=rs.getString(1);
+				   String addres=rs.getString(2);
+				   String cNumber=rs.getString(3);
+				   int id =rs.getInt(4);
+				   String pass=rs.getString(5);
+				   int depo=rs.getInt(6);
+				   int balnce=rs.getInt(7);
+				   
+				   cuss=new Customer(cName, addres, cNumber, id, pass, depo,balnce);
+			 }
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return cuss;
+	}
+	
+	public List<Account> recentTransactions(int userId) {
+		List<Account>accounts=new ArrayList<>();
+		Account account=null;
+		try(PreparedStatement pstmt=connection.prepareStatement("select * from transactions where user_Id = ? limit 5")) {
+			
+			pstmt.setInt(1, userId);
+			
+			ResultSet rs=pstmt.executeQuery();
+			
+			while(rs.next()) {
+				int balance=rs.getInt(1);
+				int moneyTransaction=rs.getInt(2);
+				Date dateOfTransaction=rs.getDate(3);
+				int user_Id=rs.getInt(4);
+				
+				account=new Account(balance, moneyTransaction, dateOfTransaction, user_Id);
+				accounts.add(account);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return accounts;
 	}
 
 }

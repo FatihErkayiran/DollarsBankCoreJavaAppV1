@@ -1,8 +1,10 @@
 package com.dollarsbank.application;
 
+import java.util.List;
 import java.util.Scanner;
 
 import com.dollarsbank.controller.DollarsBankController;
+import com.dollarsbank.model.Account;
 import com.dollarsbank.model.Customer;
 
 
@@ -17,6 +19,7 @@ public class View {
 	DollarsBankController controller=new DollarsBankController();
 	boolean state=true;
 	int accountChoice=9;
+	
 	while(state) {	
 		System.out.println("DOLLARSBANK Welcomes You ");
 		Scanner scanner =new Scanner(System.in);
@@ -27,7 +30,6 @@ public class View {
 		if (choice==1) {
 			System.out.println("Enter Details for the Account");
 			System.out.println("Customer Name");
-			scanner.nextLine();
 			String customerName=scanner.nextLine();
 			System.out.println("Customer Address");
 			String address=scanner.nextLine();
@@ -62,8 +64,8 @@ public class View {
 			System.out.println(" Password ");
 			//scanner.nextLine();
 			String password=scanner.nextLine();
-		  Customer cuss= controller.loginCustomer(userId, password);
-		  System.out.println(cuss);
+		    Customer cuss= controller.loginCustomer(userId, password);
+		    System.out.println(cuss);
 		//  System.out.println(userId + "  "+ password);
 		  
 			//System.out.println(login);
@@ -91,9 +93,25 @@ public class View {
 					
 				}
 				else if (accountChoice==3) {
+					System.out.println("To which user id do you want to transfer your money");
+					int usrId=scanner.nextInt();
+					scanner.nextLine();
+					System.out.println("how much money do you want to transfer");
+					int fund=scanner.nextInt();
+					scanner.nextLine();
+					int balance=controller.withdrawAmount(fund, cuss);
+					controller.updateBalance(balance, cuss);
+					Customer cstmr=controller.fundTransfer(usrId, fund);
+					int blnc=controller.depositAmount(fund, cstmr);
+					controller.updateBalance(blnc, cstmr);
+					
+					
 					
 				}
 				else if (accountChoice==4) {
+					List<Account>accounts=controller.recentTransactions(userId);
+					System.out.println(accounts);
+					
 					
 				}
 				else if (accountChoice==5) {
