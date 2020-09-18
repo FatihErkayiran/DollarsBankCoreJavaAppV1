@@ -26,6 +26,8 @@ import com.dollarsbank.model.Customer;
 
 
 
+
+
 public class DollarsBankController {
 	
 	
@@ -243,5 +245,39 @@ public class DollarsBankController {
 		}
 		return accounts;
 	}
+	
+public Customer updateEverytime(int userId) {
+		
+		Customer cstmer = null;
+		
+		// select * from department where dept_id = ?
+		try(PreparedStatement pstmt = connection.prepareStatement("select * from department where userId = ?")) {
+			
+			pstmt.setInt(1, userId);
+			
+			ResultSet rs = pstmt.executeQuery();
+			
+			if (rs.next()) {
+				   String cName=rs.getString(1);
+				   String addres=rs.getString(2);
+				   String cNumber=rs.getString(3);
+				   int id =rs.getInt(4);
+				   String pass=rs.getString(5);
+				   int depo=rs.getInt(6);
+				   int balnce=rs.getInt(7);
+				   
+				   cstmer=new Customer(cName, addres, cNumber, id, pass, depo,balnce);
+				
+			}
+			
+			
+		} catch(SQLException e) {
+			
+		}
+		
+		
+		return cstmer;
+	}
+
 
 }

@@ -70,68 +70,123 @@ public class View {
 		//  System.out.println(userId + "  "+ password);
 		  
 			//System.out.println(login);
-			if (cuss!=null) {
-				boolean state2=true;
-				while(state2) {
-				System.out.println(" Welcome customer ");
-				System.out.println("1.Deposit Amount\n2.Withdraw Amount\n3.Funds Transfer"
-						+ "\n4.View Five recent transactions\n5.Display Customer Information\n6.Sign Out");
-				accountChoice=scanner.nextInt();
-				scanner.nextLine();
-				
-				if(accountChoice==1) {
-					System.out.println("How much money you want to deposit ");
-					int money=scanner.nextInt();
-					scanner.nextLine();
-					//System.out.println("money " + money);
-					int balance=controller.depositAmount(money, cuss);
-					controller.updateBalance(balance, cuss);
-				}
-				else if (accountChoice==2) {
-					System.out.println("How much you want to withdraw ");
-					int money=scanner.nextInt();
-					scanner.nextLine();
-					int balance=controller.withdrawAmount(money, cuss);
-					controller.updateBalance(balance, cuss);
-					
-				}
-				else if (accountChoice==3) {
-					System.out.println("To which user id do you want to transfer your money");
-					int usrId=scanner.nextInt();
-					scanner.nextLine();
-					System.out.println("how much money do you want to transfer");
-					int fund=scanner.nextInt();
-					scanner.nextLine();
-					int balance=controller.withdrawAmount(fund, cuss);
-					controller.updateBalance(balance, cuss);
-					Customer cstmr=controller.fundTransfer(usrId, fund);
-					int blnc=controller.depositAmount(fund, cstmr);
-					controller.updateBalance(blnc, cstmr);
-					
-					
-					
-				}
-				else if (accountChoice==4) {
-					List<Account>accounts=controller.recentTransactions(userId);
-					System.out.println(accounts);
-					
-					
-				}
-				else if (accountChoice==5) {
-					Customer cstmrr=controller.loginCustomer(userId, password);
-					System.out.println(cstmrr);
-				}
-				else if (accountChoice==6) {
-					System.out.println("see you soon");
-					state2=false;
-					state=false;
-				}
-				else {
-					System.out.println("wrong choice please choose between 1-6");
-				}
-				
-				}
-			}
+					if (cuss!=null) {
+						System.out.println(" Welcome " + cuss.getCustomerName());
+						boolean state2=true;
+						while(state2) {
+						
+						System.out.println("1.Deposit Amount\n2.Withdraw Amount\n3.Funds Transfer"
+								+ "\n4.View Five recent transactions\n5.Display Customer Information\n6.Sign Out");
+						accountChoice=scanner.nextInt();
+						scanner.nextLine();
+						
+						if(accountChoice==1) {
+							System.out.println("How much money you want to deposit ");
+							int money=scanner.nextInt();
+							scanner.nextLine();
+							//System.out.println("money " + money);
+							int balance=controller.depositAmount(money, cuss);
+							controller.updateBalance(balance, cuss);
+							controller.updateEverytime(userId);
+							System.out.println("    ");
+							System.out.println("Do you want to continue y/n ? ");
+							String answer=scanner.next();
+							if (answer.equalsIgnoreCase("n".trim())) {
+								System.out.println("see you soon");
+								state2=false;
+								state=false;	
+							}
+							else {
+								System.out.println("what else do you want ");
+							}
+						}
+						else if (accountChoice==2) {
+							System.out.println("How much you want to withdraw ");
+							int mony=scanner.nextInt();
+							scanner.nextLine();
+							int balnce=controller.withdrawAmount(mony, cuss);
+							controller.updateBalance(balnce, cuss);
+							controller.updateEverytime(userId);
+							System.out.println("    ");
+							System.out.println("Do you want to continue y/n ? ");
+							String answer=scanner.next();
+							if (answer.equalsIgnoreCase("n".trim())) {
+								System.out.println("see you soon");
+								state2=false;
+								state=false;	
+							}
+							else {
+								System.out.println("what else do you want ");
+							}
+						}
+						else if (accountChoice==3) {
+							System.out.println("To which user id do you want to transfer your money");
+							int usrId=scanner.nextInt();
+							scanner.nextLine();
+							System.out.println("how much money do you want to transfer");
+							int fund=scanner.nextInt();
+							scanner.nextLine();
+							int balance=controller.withdrawAmount(fund, cuss);
+							controller.updateBalance(balance, cuss);
+							Customer cstmr=controller.fundTransfer(usrId, fund);
+							int blnc=controller.depositAmount(fund, cstmr);
+							controller.updateBalance(blnc, cstmr);
+							controller.updateEverytime(userId);
+							System.out.println("    ");
+							System.out.println("Do you want to continue y/n ? ");
+							String answer=scanner.next();
+							if (answer.equalsIgnoreCase("n".trim())) {
+								System.out.println("see you soon");
+								state2=false;
+								state=false;	
+							}
+							if (answer.equalsIgnoreCase("y".trim())) {
+								System.out.println("what else do you want ");
+							}
+							
+							
+						}
+						else if (accountChoice==4) {
+							List<Account>accounts=controller.recentTransactions(userId);
+							System.out.println(accounts + "\n");
+							System.out.println("Do you want to continue y/n ? ");
+							String answer=scanner.next();
+							if (answer.equalsIgnoreCase("n".trim())) {
+								System.out.println("see you soon");
+								state2=false;
+								state=false;	
+							}
+							else {
+								System.out.println("what else do you want ");
+							}
+							
+							
+						}
+						else if (accountChoice==5) {
+							Customer cstmrr=controller.loginCustomer(userId, password);
+							System.out.println(cstmrr);
+							System.out.println("Do you want to continue y/n ? ");
+							String answer=scanner.next();
+							if (answer.equalsIgnoreCase("n".trim())) {
+								System.out.println("see you soon");
+								state2=false;
+								state=false;	
+							}
+							else {
+								System.out.println("what else do you want ");
+							}
+						}
+						else if (accountChoice==6) {
+							System.out.println("see you soon");
+							state2=false;
+							state=false;
+						}
+						else {
+							System.out.println("wrong choice please choose between 1-6");
+						}
+						
+						}
+					}
 			else  {
 				System.out.println("Invalid Credentials,Try again");
 				System.out.println(" Enter Login Details");
@@ -140,8 +195,8 @@ public class View {
 				scanner.nextLine();
 				System.out.println(" Password ");
 				password=scanner.nextLine();
-				scanner.nextLine();
-				controller.loginCustomer(userId, password);
+				//scanner.nextLine();
+				//controller.loginCustomer(userId, password);
 			}
 			
 			
