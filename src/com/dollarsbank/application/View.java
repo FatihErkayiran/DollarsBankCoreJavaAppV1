@@ -6,6 +6,7 @@ import java.util.Scanner;
 import com.dollarsbank.controller.DollarsBankController;
 import com.dollarsbank.model.Account;
 import com.dollarsbank.model.Customer;
+import com.mysql.cj.exceptions.WrongArgumentException;
 
 
 public class View {
@@ -70,6 +71,8 @@ public class View {
 		  
 			//System.out.println(login);
 			if (cuss!=null) {
+				boolean state2=true;
+				while(state2) {
 				System.out.println(" Welcome customer ");
 				System.out.println("1.Deposit Amount\n2.Withdraw Amount\n3.Funds Transfer"
 						+ "\n4.View Five recent transactions\n5.Display Customer Information\n6.Sign Out");
@@ -115,15 +118,19 @@ public class View {
 					
 				}
 				else if (accountChoice==5) {
-					
+					Customer cstmrr=controller.loginCustomer(userId, password);
+					System.out.println(cstmrr);
 				}
 				else if (accountChoice==6) {
-					
+					System.out.println("see you soon");
+					state2=false;
+					state=false;
 				}
 				else {
-					
+					System.out.println("wrong choice please choose between 1-6");
 				}
-				state=false;
+				
+				}
 			}
 			else  {
 				System.out.println("Invalid Credentials,Try again");
