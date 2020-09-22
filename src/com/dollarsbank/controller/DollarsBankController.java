@@ -1,12 +1,5 @@
 package com.dollarsbank.controller;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -22,16 +15,36 @@ import com.dollarsbank.model.Customer;
 
 
 
-
-
-
-
-
-
 public class DollarsBankController {
 	
 	
 	Connection connection=BetterConnectionManager.getConnection();
+	
+	public int getBalance(int customerId) {
+		
+		int balance=-1;
+		
+		try(PreparedStatement pstmt=connection.prepareStatement("select * from customers where userId = ? ")) {
+			
+			pstmt.setInt(1, customerId);
+			
+			ResultSet rs=pstmt.executeQuery();
+			
+			if (rs.next()) {
+				balance=rs.getInt("balance");
+			}
+			
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+		
+		
+		
+		return balance;
+	
+	}
 	
 	
 	public Customer loginCustomer(int userId,String password) {
@@ -59,9 +72,7 @@ public class DollarsBankController {
 			
 			
 			
-	//		if (cuss!=null) {
-	//			return cuss;
-	//		}
+
 			
 			}
 			
@@ -91,16 +102,16 @@ public class DollarsBankController {
 			pstmt.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			// TODO: handle exception
+			
 		}
 		return false;
 }
 	
-	public int depositAmount(int money,Customer customer) {
+	public int depositAmount(int money,int customerId) {
 		
 		LocalDate localDate=LocalDate.now();
 		java.sql.Date sqlDate = java.sql.Date.valueOf(localDate );
-		int balance=customer.getBalance();
+		int balance=getBalance(customerId);
 		try {
 			PreparedStatement pstmt=connection.prepareStatement("insert into transactions values(?,?,?,?)");
 		
@@ -109,7 +120,7 @@ public class DollarsBankController {
 			pstmt.setInt(1, balance);
 			pstmt.setInt(2, money);
 			pstmt.setDate(3,sqlDate );
-			pstmt.setInt(4, customer.getUserId());
+			pstmt.setInt(4, customerId);
 					
 			int query=pstmt.executeUpdate();
 			
@@ -118,26 +129,13 @@ public class DollarsBankController {
 			  
 				System.out.println("your available balance " + balance);
 			}	
-//			else {
-//				System.out.println("ne olacak simdi ");
-//		     }
-			
-//			PreparedStatement pstmt2=connection.prepareStatement("update customers set balance = ? where userId = ?");
-//			
-//			pstmt2.setInt(1, balance);
-//			pstmt2.setInt(2, customer.getUserId());
-//			
-//			ResultSet rs=pstmt2.executeQuery();
-//			
-//			if (rs.next()) {
-//				System.out.println(" you got it ");
-//			}
+
 			
 			pstmt.close();
-		//	pstmt2.close();
+		
 			
 		} catch (Exception e) {
-			// TODO: handle exception
+			
 		}
 		return balance;
 		
@@ -154,10 +152,7 @@ public class DollarsBankController {
 			pstmt2.setInt(2, customer.getUserId());
 			
 			int count=pstmt2.executeUpdate();
-//			
-//			if (rs.next()) {
-//				System.out.println(" you got it ");
-//			}
+
 			System.out.println("updated balance of " + count + " account succesfully ");
 			pstmt2.close();
 		} catch (Exception e) {
@@ -171,10 +166,10 @@ public class DollarsBankController {
 	
 	
 	
-	public int withdrawAmount(int money,Customer customer) {
+	public int withdrawAmount(int money,int customerId) {
 		LocalDate localDate=LocalDate.now();
 		java.sql.Date sqlDate = java.sql.Date.valueOf(localDate );
-		int balance=customer.getBalance();
+		int balance=getBalance(customerId);
 		try(PreparedStatement pstmt=connection.prepareStatement("insert into transactions values(?,?,?,?)")) {
 			
 			balance-=money;
@@ -182,7 +177,7 @@ public class DollarsBankController {
 			pstmt.setInt(1, balance);
 			pstmt.setInt(2, money);
 			pstmt.setDate(3,sqlDate );
-			pstmt.setInt(4, customer.getUserId());
+			pstmt.setInt(4, customerId);
 			
 			int query=pstmt.executeUpdate();
 			
@@ -246,38 +241,7 @@ public class DollarsBankController {
 		return accounts;
 	}
 	
-public Customer updateEverytime(int userId) {
-		
-		Customer cstmer = null;
-		
-		// select * from department where dept_id = ?
-		try(PreparedStatement pstmt = connection.prepareStatement("select * from department where userId = ?")) {
-			
-			pstmt.setInt(1, userId);
-			
-			ResultSet rs = pstmt.executeQuery();
-			
-			if (rs.next()) {
-				   String cName=rs.getString(1);
-				   String addres=rs.getString(2);
-				   String cNumber=rs.getString(3);
-				   int id =rs.getInt(4);
-				   String pass=rs.getString(5);
-				   int depo=rs.getInt(6);
-				   int balnce=rs.getInt(7);
-				   
-				   cstmer=new Customer(cName, addres, cNumber, id, pass, depo,balnce);
-				
-			}
-			
-			
-		} catch(SQLException e) {
-			
-		}
-		
-		
-		return cstmer;
-	}
+
 
 
 }
